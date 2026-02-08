@@ -4,13 +4,10 @@ pipeline {
             image 'node:18'
         }
     }
-
     stages {
-        stage('Build') {
+        stage('Test') {
             steps {
                 sh 'node -v'
-                sh 'npm -v'
-                sh 'npm install'
             }
         }
     }
