@@ -4,7 +4,7 @@ node {
     }
 
     stage('Install Dependencies') {
-        // Menggunakan npm langsung tanpa kontainer docker
+        // Kita pakai npm langsung, tanpa membungkusnya dengan Docker
         sh 'npm install'
     }
 
