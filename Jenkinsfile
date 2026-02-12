@@ -1,18 +1,25 @@
-node {
-    stage('Checkout') {
-        checkout scm
-    }
+pipeline {
+    agent any
 
-    stage('Install Dependencies') {
-        // Kita pakai npm langsung, tanpa membungkusnya dengan Docker
-        sh 'npm install'
-    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'react-app',
+                    url: 'https://github.com/sayyidusy15/a428-cicd-labs.git'
+            }
+        }
 
-    stage('Build') {
-        sh 'npm run build'
-    }
+        stage('Build') {
+            steps {
+                sh 'npm install'
+                sh 'npm run build'
+            }
+        }
 
-    stage('Test') {
-        sh 'CI=true npm test'
+        stage('Test') {
+            steps {
+                sh 'npm test -- --watchAll=false'
+            }
+        }
     }
 }
