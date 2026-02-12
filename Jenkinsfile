@@ -1,22 +1,21 @@
-pipeline {
-    agent any
+node {
+    // Mendefinisikan tool Node.js yang sudah kamu buat di Global Tool Configuration
+    def nodeHome = tool name: 'Node18', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+    env.PATH = "${nodeHome}/bin:${env.PATH}"
 
-    tools {
-        nodejs 'Node18'
+    stage('Checkout') {
+        checkout scm
     }
 
-    stages {
-        stage('Build') {
-            steps {
-                sh 'npm install'
-                sh 'npm run build'
-            }
-        }
+    stage('Build') {
+        echo 'Installing dependencies and building...'
+        sh 'npm install'
+        sh 'npm run build'
+    }
 
-        stage('Test') {
-            steps {
-                sh 'npm test -- --watchAll=false'
-            }
-        }
+    stage('Test') {
+        echo 'Running tests...'
+        // CI=true memastikan test berhenti setelah selesai (tidak gantung)
+        sh 'CI=true npm test -- --watchAll=false'
     }
 }
