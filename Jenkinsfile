@@ -1,15 +1,18 @@
-pipeline {
-    agent {
-        docker {
-            image 'node:18-bullseye-slim'
-        }
-    }
-    stages {
+node {
+    docker.image('node:16-buster-slim').inside('-p 3000:3000') {
         stage('Build') {
-            steps {
-                sh 'npm install'
-                sh 'npm run build' // Jika ada proses build
-            }
+            checkout scm
+            sh 'npm install'
+        }
+        stage('Test') {
+            checkout scm
+            sh './jenkins/scripts/test.sh'
+        }
+        stage('Deploy') {
+            checkout scm
+            sh './jenkins/scripts/deliver.sh' 
+            input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)' 
+            sh './jenkins/scripts/kill.sh' 
         }
     }
 }
