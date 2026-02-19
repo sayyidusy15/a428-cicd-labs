@@ -27,13 +27,13 @@ node {
     // Penambahan Stage Deploy (Sesuai permintaan revisi)
     stage('Deploy') {
         echo 'Deploying the application...'
-        // Menjalankan script shell untuk deliver
+
         sh './jenkins/scripts/deliver.sh'
-        
-        // Memberikan input manual agar pipeline menunggu interaksi user
-        input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)'
-        
-        // Menjalankan script shell untuk menghentikan proses
+
+        echo 'Application running for 60 seconds...'
+        sleep 60
+
+        echo 'Stopping application...'
         sh './jenkins/scripts/kill.sh'
     }
 }
