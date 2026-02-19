@@ -19,6 +19,13 @@ node {
         sh 'CI=true npm test -- --watchAll=false'
     }
 
+    stage('Manual Approval') {
+        steps {
+            input message: 'Lanjutkan ke tahap Deploy?',
+                  ok: 'Proceed'
+        }
+    }
+
     // Penambahan Stage Deploy (Sesuai permintaan revisi)
     stage('Deploy') {
         echo 'Deploying the application...'
